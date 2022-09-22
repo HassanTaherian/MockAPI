@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MockAPI.Model.Marketing;
 using MockAPI.Model.Product;
+using MockAPI.Model.Recommendation;
 
 namespace MockAPI.Controllers
 {
@@ -36,14 +37,38 @@ namespace MockAPI.Controllers
         [HttpPost]
         public IActionResult UpdateProductCounting([FromBody] ICollection<ProductUpdateCountingItemRequestDto> dtos)
         {
-            Console.WriteLine(dtos);
+            foreach (var productUpdateCountingItemRequestDto in dtos)
+            {
+                Console.WriteLine(productUpdateCountingItemRequestDto);
+            }
+
             return Ok(dtos);
         }
 
         [HttpPost]
         public IActionResult Marketing([FromBody] ICollection<MarketingInvoiceRequest> requests)
         {
+            foreach (var marketingInvoiceRequest in requests)
+            {
+                Console.WriteLine(marketingInvoiceRequest);
+
+            }
             return Ok(requests);
+        }
+
+        [HttpPost]
+        public IActionResult Recommendation([FromBody] ProductRecommendRequestDto requests)
+        {
+            var list = new List<ProductRecommendResponseDto>();
+            var random = new Random();
+            for (var i = 0; i < 10; i++)
+            {
+                list.Add(new ProductRecommendResponseDto
+                {
+                    ProductId = random.Next(20, 30)
+                });
+            }
+            return Ok(list);
         }
     }
 }
